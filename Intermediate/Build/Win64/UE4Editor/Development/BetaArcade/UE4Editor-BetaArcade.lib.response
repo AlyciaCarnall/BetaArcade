@@ -1,0 +1,16 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-BetaArcade.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\alyci\Documents\Unreal Projects\BetaArcade\Intermediate\Build\Win64\BetaArcadeEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"C:\Users\alyci\Documents\Unreal Projects\BetaArcade\Intermediate\Build\Win64\UE4Editor\Development\BetaArcade\BetaArcade.cpp.obj"
+"C:\Users\alyci\Documents\Unreal Projects\BetaArcade\Intermediate\Build\Win64\UE4Editor\Development\BetaArcade\BetaArcadeGameModeBase.cpp.obj"
+"C:\Users\alyci\Documents\Unreal Projects\BetaArcade\Intermediate\Build\Win64\UE4Editor\Development\BetaArcade\BetaArcade.init.gen.cpp.obj"
+"C:\Users\alyci\Documents\Unreal Projects\BetaArcade\Intermediate\Build\Win64\UE4Editor\Development\BetaArcade\BetaArcadeGameModeBase.gen.cpp.obj"
+"C:\Users\alyci\Documents\Unreal Projects\BetaArcade\Intermediate\Build\Win64\UE4Editor\Development\BetaArcade\Default.rc2.res"
+/OUT:"C:\Users\alyci\Documents\Unreal Projects\BetaArcade\Intermediate\Build\Win64\UE4Editor\Development\BetaArcade\UE4Editor-BetaArcade.lib"
+/INCLUDE:IMPLEMENT_MODULE_BetaArcade

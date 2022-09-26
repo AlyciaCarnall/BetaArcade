@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\BetaArcade.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{0E4A1843-ACA2-4645-B266-822FE27B23F4}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\BetaArcade.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\BetaArcadeEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{E9E66919-632F-4BBD-A98A-951EA709F484}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\BetaArcade">
+      <UniqueIdentifier>{D0484610-7131-4E4E-AA38-FFFD7FE7AB21}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\BetaArcade\BetaArcade.Build.cs">
+      <Filter>Source\BetaArcade</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\BetaArcade\BetaArcade.cpp">
+      <Filter>Source\BetaArcade</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\BetaArcade\BetaArcade.h">
+      <Filter>Source\BetaArcade</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\BetaArcade\BetaArcadeGameModeBase.cpp">
+      <Filter>Source\BetaArcade</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\BetaArcade\BetaArcadeGameModeBase.h">
+      <Filter>Source\BetaArcade</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
