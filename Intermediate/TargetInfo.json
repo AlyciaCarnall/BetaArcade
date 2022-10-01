@@ -2,12 +2,12 @@
 	"Targets": [
 		{
 			"Name": "BetaArcade",
-			"Path": "C:\\Users\\alyci\\Documents\\Unreal Projects\\BetaArcade\\Source\\BetaArcade.Target.cs",
+			"Path": "C:\\Users\\Craig\\Documents\\GitHub\\BetaArcade\\Source\\BetaArcade.Target.cs",
 			"Type": "Game"
 		},
 		{
 			"Name": "BetaArcadeEditor",
-			"Path": "C:\\Users\\alyci\\Documents\\Unreal Projects\\BetaArcade\\Source\\BetaArcadeEditor.Target.cs",
+			"Path": "C:\\Users\\Craig\\Documents\\GitHub\\BetaArcade\\Source\\BetaArcadeEditor.Target.cs",
 			"Type": "Editor"
 		}
 	]

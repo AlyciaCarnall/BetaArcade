@@ -1,8 +1,8 @@
 {
 	"SourceFiles": [
-		"C:\\Users\\alyci\\Documents\\Unreal Projects\\BetaArcade\\Source\\BetaArcade\\BetaArcade.Build.cs",
-		"C:\\Users\\alyci\\Documents\\Unreal Projects\\BetaArcade\\Source\\BetaArcade.Target.cs",
-		"C:\\Users\\alyci\\Documents\\Unreal Projects\\BetaArcade\\Source\\BetaArcadeEditor.Target.cs"
+		"C:\\Users\\Craig\\Documents\\GitHub\\BetaArcade\\Source\\BetaArcade\\BetaArcade.Build.cs",
+		"C:\\Users\\Craig\\Documents\\GitHub\\BetaArcade\\Source\\BetaArcade.Target.cs",
+		"C:\\Users\\Craig\\Documents\\GitHub\\BetaArcade\\Source\\BetaArcadeEditor.Target.cs"
 	],
 	"EngineVersion": "4.26.2"
 }
