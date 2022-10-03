@@ -2,4 +2,4 @@
 Beta Arcade module for university
 
 Link to the GDD document:
-https://discord.com/channels/@me/1023947017745080353/1023972992163795115
+https://liveteesac-my.sharepoint.com/:w:/g/personal/w9030421_live_tees_ac_uk/EXGM17_hm_tPuOmtYgOj_WsBpbX2BFWduMaP58Xe3mzoFg?e=FWpeeQ
