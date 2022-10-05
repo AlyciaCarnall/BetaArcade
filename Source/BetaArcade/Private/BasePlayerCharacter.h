@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "ProjectRoll/Core/Characters/Components/Bash_Component.h"
+#include "Components/Bash_Component.h"
 #include "BasePlayerCharacter.generated.h"
 
 // R.Robson - We need to use the default player controller in the gamemode

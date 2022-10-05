@@ -1,9 +1,10 @@
 // Author : Craig Palmer v8009358.
 
 #include "BasePlayerController.h"
+#include "BasePlayerCharacter.h"
 
 ABasePlayerController::ABasePlayerController() :
-	possessedPawn(nullptr)
+	possessedCharacter(nullptr)
 {
 }
 
@@ -12,7 +13,7 @@ void ABasePlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	//TODO - Get possessed pawn and update member reference.
-	possessedPawn = GetPawn();
+	possessedCharacter = Cast<ABasePlayerCharacter>(GetPawn());
 }
 
 void ABasePlayerController::SetupInputComponent()
@@ -39,9 +40,9 @@ void ABasePlayerController::CallMoveRight(float _value)
 	//UE_LOG(LogTemp, Warning, TEXT("MoveRight called from Player Controller with value (%f)."), _value);
 
 	//Call action on character
-	if (possessedPawn)
+	if (possessedCharacter)
 	{
-		//possessedPawn->MoveRight(_value);
+		possessedCharacter->HorizontalMovement(_value);
 	}
 }
 
@@ -51,9 +52,9 @@ void ABasePlayerController::CallMoveForward(float _value)
 	//UE_LOG(LogTemp, Warning, TEXT("MoveForward called from Player Controller with value (%f)."), _value);
 
 	//Call action on character
-	if (possessedPawn)
+	if (possessedCharacter)
 	{
-		//possessedPawn->MoveForward(_value);
+		possessedCharacter->VerticalMovement(_value);
 	}
 
 }
@@ -63,7 +64,7 @@ void ABasePlayerController::CallJump()
 	UE_LOG(LogTemp, Warning, TEXT("Jump called from Player Controller"));
 
 	//Call action on character
-	if (possessedPawn)
+	if (possessedCharacter)
 	{
 		//possessPawn->CallJump();
 	}

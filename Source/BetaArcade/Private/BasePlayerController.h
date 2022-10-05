@@ -9,6 +9,8 @@
 /**
  * 
  */
+class ABasePlayerCharacter;
+
 UCLASS()
 class ABasePlayerController : public APlayerController
 {
@@ -30,6 +32,6 @@ public:
 	void CallJump();
 
 	//Character pointer declaration.
-	APawn* possessedPawn;
+	ABasePlayerCharacter* possessedCharacter;
 	
 };

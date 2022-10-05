@@ -1,7 +1,7 @@
 // Author : Ryan Robson T7091365
 
 
-#include "ProjectRoll/Core/Characters/Components/Bash_Component.h"
+#include "Bash_Component.h"
 
 // Sets default values for this component's properties
 UBash_Component::UBash_Component()
