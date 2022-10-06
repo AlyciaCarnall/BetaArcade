@@ -16,6 +16,9 @@ class ABasePlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+	bool bShieldActive;
+	float fShieldTime;
+
 public:
 	ABasePlayerController();
 	virtual void BeginPlay() override;
@@ -29,7 +32,10 @@ public:
 	void CallMoveForward(float _value);
 
 	UFUNCTION(BlueprintCallable)
-	void CallJump();
+	void CallBash();
+
+	UFUNCTION(BlueprintCallable)
+	void CallShield();
 
 	//Character pointer declaration.
 	ABasePlayerCharacter* possessedCharacter;
