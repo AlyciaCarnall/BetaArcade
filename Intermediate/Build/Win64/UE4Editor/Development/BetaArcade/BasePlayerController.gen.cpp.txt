@@ -1,5 +1,0 @@
-C:\Users\Craig\Documents\GitHub\BetaArcade\Intermediate\Build\Win64\UE4Editor\Development\BetaArcade\Definitions.BetaArcade.h
-C:\UnrealEngine\UE_4.26\Engine\Source\Runtime\CoreUObject\Public\UObject/GeneratedCppIncludes.h
-C:\UnrealEngine\UE_4.26\Engine\Source\Runtime\CoreUObject\Public\UObject/MetaData.h
-C:\Users\Craig\Documents\GitHub\BetaArcade\Source\BetaArcade/Private/BasePlayerController.h
-C:\Users\Craig\Documents\GitHub\BetaArcade\Intermediate\Build\Win64\UE4Editor\Inc\BetaArcade\BasePlayerController.generated.h

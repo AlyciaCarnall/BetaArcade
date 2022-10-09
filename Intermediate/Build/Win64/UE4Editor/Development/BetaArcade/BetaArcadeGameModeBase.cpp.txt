@@ -1,7 +1,0 @@
-C:\Users\Craig\Documents\GitHub\BetaArcade\Intermediate\Build\Win64\UE4Editor\Development\BetaArcade\Definitions.BetaArcade.h
-C:\Users\Craig\Documents\GitHub\BetaArcade\Source\BetaArcade\BetaArcadeGameModeBase.h
-C:\UnrealEngine\UE_4.26\Engine\Source\Runtime\Engine\Classes\GameFramework/GameModeBase.h
-C:\UnrealEngine\UE_4.26\Engine\Source\Runtime\Engine\Classes\Engine/ServerStatReplicator.h
-C:\UnrealEngine\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\ServerStatReplicator.generated.h
-C:\UnrealEngine\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\GameModeBase.generated.h
-C:\Users\Craig\Documents\GitHub\BetaArcade\Intermediate\Build\Win64\UE4Editor\Inc\BetaArcade\BetaArcadeGameModeBase.generated.h
