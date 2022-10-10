@@ -2,4 +2,11 @@
 
 
 #include "BetaArcadeGameModeBase.h"
+#include "BasePlayerCharacter.h"
 
+ABetaArcadeGameModeBase::ABetaArcadeGameModeBase()
+	:
+	MatchTime(99.0f),
+	IsTimerActive(false)
+{
+}
