@@ -1,7 +1,8 @@
 // Author : Ryan Robson T7091365
+//Edit's by : Alycia Carnall
 
 #include "BasePlayerCharacter.h"
-
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -14,6 +15,11 @@ ABasePlayerCharacter::ABasePlayerCharacter()
 	
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
+	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->SetCollisionProfileName(FName("NoCollision"));
 
 #ifdef ENABLE_CHARACTER_INPUT
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
@@ -59,7 +65,6 @@ void ABasePlayerCharacter::Tick(float DeltaTime)
 	//UE_LOG(LogTemp, Warning, TEXT("Velocity %s time %f"), *GetVelocity().ToString(), UGameplayStatics::GetRealTimeSeconds(GetWorld()));
 }
 
-#ifdef ENABLE_CHARACTER_INPUT
 // Called to bind functionality to input
 void ABasePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -68,7 +73,7 @@ void ABasePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAxis("MoveForward", this, &ABasePlayerCharacter::VerticalMovement);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ABasePlayerCharacter::HorizontalMovement);
 }
-#endif
+
 
 void ABasePlayerCharacter::VerticalMovement(float value)
 {
@@ -94,5 +99,19 @@ void ABasePlayerCharacter::PostEditChangeProperty(FPropertyChangedEvent& Propert
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 
 	UpdateMaxAcceleration();
+}
+
+void ABasePlayerCharacter::Die()
+{
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCharacterMovement()->GravityScale = 0;
+	GetCharacterMovement()->Velocity = FVector(0);
+
+	FinishDying();
+}
+
+void ABasePlayerCharacter::FinishDying()
+{
+	Destroy();
 }
 
