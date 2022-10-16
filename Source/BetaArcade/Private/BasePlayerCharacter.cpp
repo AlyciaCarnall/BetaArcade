@@ -1,5 +1,5 @@
 // Author : Ryan Robson T7091365
-//Edit's by : Alycia Carnall, Craig Palmer
+//Edit's by : Alycia Carnall
 
 #include "BasePlayerCharacter.h"
 #include "Components/CapsuleComponent.h"
@@ -12,6 +12,8 @@ ABasePlayerCharacter::ABasePlayerCharacter()
 	// DO THESE FIRST
 	AddCharacterComponents();
 	SetupCharacterComponents();
+	
+ 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
@@ -45,7 +47,6 @@ void ABasePlayerCharacter::SetupCharacterComponents()
 	RootComponent->SetHiddenInGame(false);
 	
 	UpdateMaxAcceleration();
-
 }
 
 
@@ -61,12 +62,6 @@ void ABasePlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//Recrd how long shield active.
-	if (ShieldActive)
-	{
-		ShieldTimer += DeltaTime;
-	}
-
 	//UE_LOG(LogTemp, Warning, TEXT("Velocity %s time %f"), *GetVelocity().ToString(), UGameplayStatics::GetRealTimeSeconds(GetWorld()));
 }
 
@@ -75,50 +70,28 @@ void ABasePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("MoveForward", this, &ABasePlayerCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ABasePlayerCharacter::MoveRight);
-
-	//Actions
-	PlayerInputComponent->BindAction("Bash", IE_Pressed, this, &ABasePlayerCharacter::Bash);
-	PlayerInputComponent->BindAction("Shield", IE_Pressed, this, &ABasePlayerCharacter::Shield);
-	PlayerInputComponent->BindAction("Shield", IE_Released, this, &ABasePlayerCharacter::Shield);
+	PlayerInputComponent->BindAxis("MoveForward", this, &ABasePlayerCharacter::VerticalMovement);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ABasePlayerCharacter::HorizontalMovement);
 }
 
 
-void ABasePlayerCharacter::MoveForward(float value)
+void ABasePlayerCharacter::VerticalMovement(float value)
 {
-	if(value == 0) return;
-	UE_LOG(LogTemp, Warning, TEXT("MoveForward called from Player Controller with value (%f)."), value);
+	if(value == 0)
+	{
+		return;
+	}
 	AddMovementInput(GetActorForwardVector(), value);
 }
 
-void ABasePlayerCharacter::MoveRight(float value)
+void ABasePlayerCharacter::HorizontalMovement(float value)
 {
-	if (value == 0) return;
-	UE_LOG(LogTemp, Warning, TEXT("MoveRight called from Player Controller with value (%f)."), value);
+	if(value == 0)
+	{
+		return;
+	}
+
 	AddMovementInput(GetActorRightVector(), value);
-}
-
-void ABasePlayerCharacter::Bash()
-{
-	//Call Bash Component . TODO
-}
-
-void ABasePlayerCharacter::Shield()
-{
-	//Craig - Kept track of shield held down time in case wanted to deplete time spent shielding in character, otherwise can do it here.
-	//Also we can probably move to a dedicated component.
-	ShieldActive = !ShieldActive;
-
-	if (ShieldActive)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Shield called from Player Controller"));
-		ShieldTimer = 0.0f;
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Shield Released"));
-	}
 }
 
 void ABasePlayerCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)

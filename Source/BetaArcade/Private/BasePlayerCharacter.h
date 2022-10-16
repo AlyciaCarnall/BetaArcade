@@ -7,6 +7,10 @@
 #include "Components/Bash_Component.h"
 #include "BasePlayerCharacter.generated.h"
 
+// R.Robson - We need to use the default player controller in the gamemode
+// for this to work, will remove it at a later date anyways
+//#define ENABLE_CHARACTER_INPUT
+
 UCLASS()
 class ABasePlayerCharacter : public ACharacter
 {
@@ -25,17 +29,25 @@ public: // Public Variables
 
 	// Sets default values for this character's properties
 	ABasePlayerCharacter();
-	// Called every frame
 
+	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+//#ifdef ENABLE_CHARACTER_INPUT
+	// Called to bind functionality to input
+	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+//#endif
+
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	void MoveForward(float value);
-	void MoveRight(float value);
-	void Bash();
-	void Shield();
+
+	void VerticalMovement(float value);
+
+	void HorizontalMovement(float value);
 
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
+
 	virtual void Die();
+
 	UFUNCTION(BlueprintCallable)
 	virtual void FinishDying();
 	
@@ -45,11 +57,11 @@ protected: // Protected Variables
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 	void AddCharacterComponents();
 	void SetupCharacterComponents();
+
 	void UpdateMaxAcceleration();
-private:
-	bool ShieldActive = false;
-	float ShieldTimer = 0.0f;
+	
 	
 };

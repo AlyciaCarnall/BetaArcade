@@ -15,6 +15,29 @@ UCLASS()
 class ABasePlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+	bool bShieldActive;
+	float fShieldTime;
+
 public:
-	virtual void OnPossess(APawn* aPawn) override;	
+	ABasePlayerController();
+	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
+	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	void CallMoveRight(float _value);
+
+	UFUNCTION(BlueprintCallable)
+	void CallMoveForward(float _value);
+
+	UFUNCTION(BlueprintCallable)
+	void CallBash();
+
+	UFUNCTION(BlueprintCallable)
+	void CallShield();
+
+	//Character pointer declaration.
+	ABasePlayerCharacter* possessedCharacter;
+	
 };
