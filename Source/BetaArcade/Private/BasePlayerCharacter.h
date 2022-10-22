@@ -1,4 +1,5 @@
 // Author : Ryan Robson T7091365
+// Edit's by :  Craig Palmer
 
 #pragma once
 
@@ -16,6 +17,10 @@ public: // Public Variables
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "BasePlayerCharacter")
 	FText CharacterName;
+
+	//CP - Collection Sphere for Powerups
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BasePlayerCharacter")
+	class USphereComponent* CollectionSphere;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerCharacter")
 	UBash_Component* BashComponent;
@@ -48,6 +53,9 @@ protected: // Protected Variables
 	void AddCharacterComponents();
 	void SetupCharacterComponents();
 	void UpdateMaxAcceleration();
+
+	UFUNCTION(BlueprintCallable, Category = "Pickups")
+	void CollectPickups();
 private:
 	bool ShieldActive = false;
 	float ShieldTimer = 0.0f;
