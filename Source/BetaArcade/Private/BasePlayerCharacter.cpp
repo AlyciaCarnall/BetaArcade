@@ -3,8 +3,12 @@
 
 #include "BasePlayerCharacter.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Pickup.h"
+
+
 
 // Sets default values
 ABasePlayerCharacter::ABasePlayerCharacter()
@@ -38,6 +42,11 @@ void ABasePlayerCharacter::AddCharacterComponents()
 	// Storing this because it's stupid to continually call a getter function when the variable should be protected...
 	CharacterMovementRef = GetCharacterMovement();
 	BashComponent = CreateDefaultSubobject<UBash_Component>(TEXT("Character Bash"));
+
+	//Setting up the collection sphere for pickups.
+	CollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
+	CollectionSphere->SetupAttachment(RootComponent);
+	CollectionSphere->SetSphereRadius(200.0f);
 }
 
 void ABasePlayerCharacter::SetupCharacterComponents()
@@ -56,6 +65,21 @@ void ABasePlayerCharacter::UpdateMaxAcceleration()
 }
 
 
+void ABasePlayerCharacter::CollectPickups()
+{
+	TArray<AActor*> CollectedActors;
+	CollectionSphere->GetOverlappingActors(CollectedActors);
+	for (AActor* Actor : CollectedActors)
+	{
+		APickup* const TestPickup = Cast<APickup>(Actor);
+		if (TestPickup && !TestPickup->IsPendingKill() && TestPickup->IsActive())
+		{
+			TestPickup->WasCollected();
+			TestPickup->SetActive(false);
+		}
+	}
+}
+
 // Called every frame
 void ABasePlayerCharacter::Tick(float DeltaTime)
 {
@@ -68,6 +92,8 @@ void ABasePlayerCharacter::Tick(float DeltaTime)
 	}
 
 	//UE_LOG(LogTemp, Warning, TEXT("Velocity %s time %f"), *GetVelocity().ToString(), UGameplayStatics::GetRealTimeSeconds(GetWorld()));
+
+	CollectPickups();
 }
 
 // Called to bind functionality to input
