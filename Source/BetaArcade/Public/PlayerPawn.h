@@ -20,6 +20,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
 	UBash_Component* BashComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BasePlayerPawn")
+	class USphereComponent* PowerupCollectionSphere;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
 	float RollSpeed = 15.0f;
 	
@@ -38,7 +41,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Bash();
 	UFUNCTION(BlueprintCallable)
-	void Shield();
+		void Shield();
 
 	virtual void Die();
 	UFUNCTION(BlueprintCallable)
@@ -46,13 +49,18 @@ public:
 
 	void LimitMaximumSpeed() const;
 
-	// This should really be from a controller...
+	// RR - This should really be from a controller...
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+	virtual void Tick(float DeltaTime) override;
+
 protected:
 	bool ShieldActive = false;
 	float ShieldTimer = 0.0f;
 	
 	void AddComponents();
 	void SetupComponents();
+
+	//CP - Collect in pickups in range of collection sphere
+	UFUNCTION(BlueprintCallable, Category = "Pickups")
+	void CollectPickups();
 };

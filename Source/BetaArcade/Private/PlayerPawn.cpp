@@ -2,6 +2,8 @@
 // Edit's by : Alycia Carnall, Craig Palmer
 
 #include "PlayerPawn.h"
+#include "Components/SphereComponent.h"
+#include "Pickup.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -9,6 +11,8 @@ APlayerPawn::APlayerPawn()
 	// Setup our components first
 	AddComponents();
 	SetupComponents();
+
+	PrimaryActorTick.bCanEverTick = true;
 
 	// This should really be from a controller...
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
@@ -92,6 +96,7 @@ void APlayerPawn::AddComponents()
 {
 	BashComponent = CreateDefaultSubobject<UBash_Component>(TEXT("Character Bash"));
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
+	PowerupCollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
 }
 
 void APlayerPawn::SetupComponents()
@@ -102,9 +107,37 @@ void APlayerPawn::SetupComponents()
 		MeshComponent->SetSimulatePhysics(true);
 		MeshComponent->SetHiddenInGame(false);
 	}
+
+	//CP - Setup Power Up Collection Sphere.
+	if (PowerupCollectionSphere != nullptr)
+	{
+		PowerupCollectionSphere->SetupAttachment(RootComponent);
+		PowerupCollectionSphere->SetSphereRadius(200.0f);
+	}
 }
 
-// This should really be from a controller...
+void APlayerPawn::CollectPickups()
+{
+	//CP - Collect all actors in range.
+	TArray<AActor*> CollectedActors;
+	PowerupCollectionSphere->GetOverlappingActors(CollectedActors);
+
+	//CP - Find any of type Pickup by attempting Cast.
+	for (AActor* Actor : CollectedActors)
+	{
+		//CP - Cast to Pickup, not about to be destroyed and is active.
+		APickup* const TestPickup = Cast<APickup>(Actor);
+		if (TestPickup &&
+			!TestPickup->IsPendingKill() &&
+			TestPickup->IsActive())
+		{
+			TestPickup->WasCollected();
+			TestPickup->SetActive(false);
+		}
+	}
+}
+
+//RR - This should really be from a controller...
 void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -116,5 +149,13 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("Bash", IE_Pressed, this, &APlayerPawn::Bash);
 	PlayerInputComponent->BindAction("Shield", IE_Pressed, this, &APlayerPawn::Shield);
 	PlayerInputComponent->BindAction("Shield", IE_Released, this, &APlayerPawn::Shield);
+}
+
+void APlayerPawn::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	//CP - Collect pickups in range of collection sphere.
+	CollectPickups();
 }
 
