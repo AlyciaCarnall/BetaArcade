@@ -28,6 +28,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shield")
 	float CooldownCurrentTimeSeconds = 0.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shield")
+	float DampingAmount = 1.0f;
+
 	//Return whether timer active.
 	UFUNCTION(BlueprintPure, Category = "Shield")
 	bool IsShielded();
@@ -39,6 +42,9 @@ public:
 	void TriggerShield();
 
 	//Pass in whether to begin or end shield effect.
-	void EnableShield(bool disable = false);
+	void ToggleShield (bool enable);
+
+private: 
+	float LinearDampingCache = 0.0f;
 
 };
