@@ -5,7 +5,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "Components/Bash_Component.h"
 #include "PlayerPawn.generated.h"
 
 UCLASS()
@@ -18,7 +17,10 @@ public:
 	UStaticMeshComponent* MeshComponent;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
-	UBash_Component* BashComponent;
+	class UBash_Component* BashComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BasePlayerPawn")
+	class UShield_Component* ShieldComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BasePlayerPawn")
 	class USphereComponent* PowerupCollectionSphere;
@@ -40,8 +42,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void Bash();
-	UFUNCTION(BlueprintCallable)
-		void Shield();
+
+	UFUNCTION(BlueprintCallable, Category = "Pickups")
+	void ActivateShield();
 
 	virtual void Die();
 	UFUNCTION(BlueprintCallable)
@@ -54,9 +57,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
-	bool ShieldActive = false;
-	float ShieldTimer = 0.0f;
-	
 	void AddComponents();
 	void SetupComponents();
 

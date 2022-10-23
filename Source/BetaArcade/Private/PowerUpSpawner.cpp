@@ -4,8 +4,8 @@ Location where we're going to spawn Power Ups via the Power Up Manager
 */
 
 
-#include "Pickup.h"
 #include "PowerUpSpawner.h"
+#include "Pickup.h"
 
 // Sets default values
 AAPowerUpSpawner::AAPowerUpSpawner()
@@ -14,8 +14,8 @@ AAPowerUpSpawner::AAPowerUpSpawner()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Delay Range
-	SpawnDelayRangeLow = 1.0f;
-	SpawnDelayRangeHigh = 4.5f;
+	SpawnDelayRangeLow = 20.0f;
+	SpawnDelayRangeHigh = 25.0f;
 
 }
 
@@ -63,9 +63,6 @@ void AAPowerUpSpawner::SpawnPickup()
 			SpawnDelay = FMath::RandRange(SpawnDelayRangeLow, SpawnDelayRangeHigh);
 			GetWorldTimerManager().SetTimer(SpawnTimer, this, &AAPowerUpSpawner::SpawnPickup, SpawnDelay, false);
 		}
-
-
 	}
-
 }
 

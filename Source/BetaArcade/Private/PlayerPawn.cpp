@@ -3,7 +3,10 @@
 
 #include "PlayerPawn.h"
 #include "Components/SphereComponent.h"
+#include "Components/Shield_Component.h"
+#include "Components/Bash_Component.h"
 #include "Pickup.h"
+#include "ShieldPickup.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -64,9 +67,10 @@ void APlayerPawn::Bash()
 	BashComponent->TriggerBash();
 }
 
-void APlayerPawn::Shield()
+void APlayerPawn::ActivateShield()
 {
-	// Not needed anymore ?
+	if (ShieldComponent)
+		ShieldComponent->TriggerShield();
 }
 
 void APlayerPawn::Die()
@@ -97,6 +101,7 @@ void APlayerPawn::AddComponents()
 	BashComponent = CreateDefaultSubobject<UBash_Component>(TEXT("Character Bash"));
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
 	PowerupCollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
+	ShieldComponent = CreateDefaultSubobject<UShield_Component>(TEXT("Shield Component"));
 }
 
 void APlayerPawn::SetupComponents()
@@ -133,6 +138,12 @@ void APlayerPawn::CollectPickups()
 		{
 			TestPickup->WasCollected();
 			TestPickup->SetActive(false);
+
+			//CP - Test as only type of pickup - later to introduce tags.
+			if (AShieldPickup* const IsShield = Cast<AShieldPickup>(TestPickup))
+			{
+				ActivateShield();
+			}
 		}
 	}
 }
@@ -147,8 +158,6 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	//Actions
 	PlayerInputComponent->BindAction("Bash", IE_Pressed, this, &APlayerPawn::Bash);
-	PlayerInputComponent->BindAction("Shield", IE_Pressed, this, &APlayerPawn::Shield);
-	PlayerInputComponent->BindAction("Shield", IE_Released, this, &APlayerPawn::Shield);
 }
 
 void APlayerPawn::Tick(float DeltaTime)
