@@ -20,9 +20,6 @@ public:
 	class UBash_Component* BashComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BasePlayerPawn")
-	class UShield_Component* ShieldComponent;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BasePlayerPawn")
 	class USphereComponent* PowerupCollectionSphere;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
@@ -44,7 +41,7 @@ public:
 	void Bash();
 
 	UFUNCTION(BlueprintCallable, Category = "Pickups")
-	void ActivateShield();
+	void ActivatePowerup();
 
 	virtual void Die();
 	UFUNCTION(BlueprintCallable)

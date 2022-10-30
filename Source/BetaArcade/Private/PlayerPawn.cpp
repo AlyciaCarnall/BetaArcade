@@ -3,7 +3,6 @@
 
 #include "PlayerPawn.h"
 #include "Components/SphereComponent.h"
-#include "Components/Shield_Component.h"
 #include "Components/Bash_Component.h"
 #include "Powerup.h"
 
@@ -66,10 +65,9 @@ void APlayerPawn::Bash()
 	BashComponent->TriggerBash();
 }
 
-void APlayerPawn::ActivateShield()
+void APlayerPawn::ActivatePowerup()
 {
-	if (ShieldComponent)
-		ShieldComponent->TriggerShield();
+	
 }
 
 void APlayerPawn::Die()
@@ -100,7 +98,6 @@ void APlayerPawn::AddComponents()
 	BashComponent = CreateDefaultSubobject<UBash_Component>(TEXT("Character Bash"));
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
 	PowerupCollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
-	ShieldComponent = CreateDefaultSubobject<UShield_Component>(TEXT("Shield Component"));
 }
 
 void APlayerPawn::SetupComponents()
@@ -141,7 +138,7 @@ void APlayerPawn::CollectPickups()
 			//CP - Test as only type of pickup - later to introduce tags.
 			if (TestPickup->TypeEnum == EPowerupType::PWR_SHIELD)
 			{
-				ActivateShield();
+				ActivatePowerup();
 			}
 		}
 	}
