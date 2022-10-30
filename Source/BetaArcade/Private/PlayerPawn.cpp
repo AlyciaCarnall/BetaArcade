@@ -3,10 +3,8 @@
 
 #include "PlayerPawn.h"
 #include "Components/SphereComponent.h"
-#include "Components/Shield_Component.h"
 #include "Components/Bash_Component.h"
-#include "Pickup.h"
-#include "ShieldPickup.h"
+#include "Powerup.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -67,10 +65,9 @@ void APlayerPawn::Bash()
 	BashComponent->TriggerBash();
 }
 
-void APlayerPawn::ActivateShield()
+void APlayerPawn::ActivatePowerup()
 {
-	if (ShieldComponent)
-		ShieldComponent->TriggerShield();
+	
 }
 
 void APlayerPawn::Die()
@@ -101,7 +98,6 @@ void APlayerPawn::AddComponents()
 	BashComponent = CreateDefaultSubobject<UBash_Component>(TEXT("Character Bash"));
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
 	PowerupCollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
-	ShieldComponent = CreateDefaultSubobject<UShield_Component>(TEXT("Shield Component"));
 }
 
 void APlayerPawn::SetupComponents()
@@ -131,7 +127,7 @@ void APlayerPawn::CollectPickups()
 	for (AActor* Actor : CollectedActors)
 	{
 		//CP - Cast to Pickup, not about to be destroyed and is active.
-		APickup* const TestPickup = Cast<APickup>(Actor);
+		APowerup* const TestPickup = Cast<APowerup>(Actor);
 		if (TestPickup &&
 			!TestPickup->IsPendingKill() &&
 			TestPickup->IsActive())
@@ -140,9 +136,9 @@ void APlayerPawn::CollectPickups()
 			TestPickup->SetActive(false);
 
 			//CP - Test as only type of pickup - later to introduce tags.
-			if (AShieldPickup* const IsShield = Cast<AShieldPickup>(TestPickup))
+			if (TestPickup->TypeEnum == EPowerupType::PWR_SHIELD)
 			{
-				ActivateShield();
+				ActivatePowerup();
 			}
 		}
 	}
