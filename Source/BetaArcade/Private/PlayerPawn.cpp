@@ -5,8 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/Shield_Component.h"
 #include "Components/Bash_Component.h"
-#include "Pickup.h"
-#include "ShieldPickup.h"
+#include "Powerup.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -131,7 +130,7 @@ void APlayerPawn::CollectPickups()
 	for (AActor* Actor : CollectedActors)
 	{
 		//CP - Cast to Pickup, not about to be destroyed and is active.
-		APickup* const TestPickup = Cast<APickup>(Actor);
+		APowerup* const TestPickup = Cast<APowerup>(Actor);
 		if (TestPickup &&
 			!TestPickup->IsPendingKill() &&
 			TestPickup->IsActive())
@@ -140,7 +139,7 @@ void APlayerPawn::CollectPickups()
 			TestPickup->SetActive(false);
 
 			//CP - Test as only type of pickup - later to introduce tags.
-			if (AShieldPickup* const IsShield = Cast<AShieldPickup>(TestPickup))
+			if (TestPickup->TypeEnum == EPowerupType::PWR_SHIELD)
 			{
 				ActivateShield();
 			}

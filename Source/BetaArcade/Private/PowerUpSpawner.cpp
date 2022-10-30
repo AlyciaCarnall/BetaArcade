@@ -5,40 +5,30 @@ Location where we're going to spawn Power Ups via the Power Up Manager
 
 
 #include "PowerUpSpawner.h"
-#include "Pickup.h"
+#include "Powerup.h"
 
 // Sets default values
-AAPowerUpSpawner::AAPowerUpSpawner()
+APowerUpSpawner::APowerUpSpawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	//Delay Range
-	SpawnDelayRangeLow = 20.0f;
-	SpawnDelayRangeHigh = 25.0f;
-
 }
 
 // Called when the game starts or when spawned
-void AAPowerUpSpawner::BeginPlay()
+void APowerUpSpawner::BeginPlay()
 {
 	Super::BeginPlay();
-
-	SpawnDelay = FMath::RandRange(SpawnDelayRangeLow, SpawnDelayRangeHigh);
-	GetWorldTimerManager().SetTimer(SpawnTimer, this, &AAPowerUpSpawner::SpawnPickup, SpawnDelay, false);
-	
 }
 
 // Called every frame
-void AAPowerUpSpawner::Tick(float DeltaTime)
+void APowerUpSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
-void AAPowerUpSpawner::SpawnPickup()
+void APowerUpSpawner::SpawnPickup(TSubclassOf<class APowerup> WhatToSpawn)
 {
-	//If we have set somewthing to spawn
+	//If we have set something to spawn
 	if (WhatToSpawn != NULL)
 	{
 		//Check for valid world
@@ -58,10 +48,9 @@ void AAPowerUpSpawner::SpawnPickup()
 			SpawnRotation.Roll = FMath::FRand() * 360.0f;
 
 			//Spawn the pickup
-			World->SpawnActor<APickup>(WhatToSpawn, SpawnLocation, SpawnRotation, SpawnParams);
-			
-			SpawnDelay = FMath::RandRange(SpawnDelayRangeLow, SpawnDelayRangeHigh);
-			GetWorldTimerManager().SetTimer(SpawnTimer, this, &AAPowerUpSpawner::SpawnPickup, SpawnDelay, false);
+			World->SpawnActor<APowerup>(WhatToSpawn, SpawnLocation, SpawnRotation, SpawnParams);
+
+
 		}
 	}
 }

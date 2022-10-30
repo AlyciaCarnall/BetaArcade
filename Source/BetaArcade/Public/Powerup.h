@@ -4,16 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Pickup.generated.h"
+#include "Powerup.generated.h"
+
+UENUM(BlueprintType)
+enum class EPowerupType : uint8
+{
+	PWR_NONE	UMETA(DisplayName = "None"),
+	PWR_SHIELD	UMETA(DisplayName = "Shield"),
+	PWR_BIGBALL	UMETA(DisplayName = "Big Ball"),
+	PWR_NUM
+};
 
 UCLASS()
-class BETAARCADE_API APickup : public AActor
+class BETAARCADE_API APowerup : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	APickup();
+	APowerup();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -36,6 +45,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = "Pickup")
 	void WasCollected();
 	virtual void WasCollected_Implementation();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EPowerupType TypeEnum;
 
 protected:
 

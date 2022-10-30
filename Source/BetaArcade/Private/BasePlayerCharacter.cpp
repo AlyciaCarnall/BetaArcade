@@ -6,7 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Pickup.h"
+#include "Powerup.h"
 
 
 
@@ -71,7 +71,7 @@ void ABasePlayerCharacter::CollectPickups()
 	CollectionSphere->GetOverlappingActors(CollectedActors);
 	for (AActor* Actor : CollectedActors)
 	{
-		APickup* const TestPickup = Cast<APickup>(Actor);
+		APowerup* const TestPickup = Cast<APowerup>(Actor);
 		if (TestPickup && !TestPickup->IsPendingKill() && TestPickup->IsActive())
 		{
 			TestPickup->WasCollected();
