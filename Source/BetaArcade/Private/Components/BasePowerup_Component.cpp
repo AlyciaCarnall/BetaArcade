@@ -22,7 +22,7 @@ bool UBasePowerup_Component::IsPowerupActive()
 
 void UBasePowerup_Component::SetPowerup(bool enable)
 {
-	CooldownCurrentTimeSeconds = CooldownMaxTimeSeconds;
+	CooldownCurrentTimeSeconds = enable ? CooldownMaxTimeSeconds : 0.0f;
 
 	//Remaining behavior integrated in derived classes.
 }
@@ -35,10 +35,12 @@ void UBasePowerup_Component::TickComponent(float DeltaTime, ELevelTick TickType,
 	//If active, reduce timer and reset when 0.
 	if (IsPowerupActive())
 	{
+		//Countdown timer...
 		CooldownCurrentTimeSeconds -= DeltaTime;
-		if (IsPowerupActive())
+
+		//Is current time seconds > 0? If not disable powerup.
+		if (!IsPowerupActive())
 		{
-			CooldownCurrentTimeSeconds = 0.0f;
 			SetPowerup(false);
 		}
 	}

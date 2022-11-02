@@ -4,6 +4,8 @@
 #include "PlayerPawn.h"
 #include "Components/SphereComponent.h"
 #include "Components/Bash_Component.h"
+
+#include "Components/PowerUp_Shield_Component.h"
 #include "Powerup.h"
 
 // Sets default values
@@ -65,11 +67,6 @@ void APlayerPawn::Bash()
 	BashComponent->TriggerBash();
 }
 
-void APlayerPawn::ActivatePowerup()
-{
-	
-}
-
 void APlayerPawn::Die()
 {
 	FinishDying();
@@ -98,6 +95,7 @@ void APlayerPawn::AddComponents()
 	BashComponent = CreateDefaultSubobject<UBash_Component>(TEXT("Character Bash"));
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
 	PowerupCollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
+	PowerUpShieldComponent = CreateDefaultSubobject<UPowerUp_Shield_Component>(TEXT("Powerup Shield Component"));
 }
 
 void APlayerPawn::SetupComponents()
@@ -132,13 +130,15 @@ void APlayerPawn::CollectPickups()
 			!TestPickup->IsPendingKill() &&
 			TestPickup->IsActive())
 		{
-			TestPickup->WasCollected();
+			TestPickup->WasCollected_Implementation();
 			TestPickup->SetActive(false);
 
 			//CP - Test as only type of pickup - later to introduce tags.
-			if (TestPickup->TypeEnum == EPowerupType::PWR_SHIELD)
+			switch (TestPickup->TypeEnum)
 			{
-				ActivatePowerup();
+			case EPowerupType::PWR_SHIELD: if (PowerUpShieldComponent) PowerUpShieldComponent->SetPowerup(true);
+			case EPowerupType::PWR_BIGBALL: /*TODO*/ break;
+			default: break;
 			}
 		}
 	}

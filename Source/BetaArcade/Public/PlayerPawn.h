@@ -22,6 +22,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BasePlayerPawn")
 	class USphereComponent* PowerupCollectionSphere;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BasePlayerPawn")
+	class UPowerUp_Shield_Component* PowerUpShieldComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
 	float RollSpeed = 15.0f;
 	
@@ -39,9 +42,6 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void Bash();
-
-	UFUNCTION(BlueprintCallable, Category = "Pickups")
-	void ActivatePowerup();
 
 	virtual void Die();
 	UFUNCTION(BlueprintCallable)
