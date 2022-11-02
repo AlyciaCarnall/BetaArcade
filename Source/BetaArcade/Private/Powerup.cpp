@@ -1,4 +1,4 @@
-// Author : Craig Palmer V8009358
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Powerup.h"
@@ -22,12 +22,14 @@ APowerup::APowerup()
 void APowerup::BeginPlay()
 {
 	Super::BeginPlay();
+	
 }
 
 // Called every frame
 void APowerup::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 }
 
 bool APowerup::IsActive()

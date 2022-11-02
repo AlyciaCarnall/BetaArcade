@@ -12,6 +12,7 @@ enum class EPowerupType : uint8
 	PWR_NONE	UMETA(DisplayName = "None"),
 	PWR_SHIELD	UMETA(DisplayName = "Shield"),
 	PWR_BIGBALL	UMETA(DisplayName = "Big Ball"),
+	PWR_NUM
 };
 
 UCLASS()
