@@ -7,14 +7,20 @@
 #include "GameFramework/Pawn.h"
 #include "PlayerPawn.generated.h"
 
-UCLASS()
+UCLASS(ClassGroup = (Custom), BlueprintType, Blueprintable, meta = (BlueprintSpawnableComponent))
 class BETAARCADE_API APlayerPawn : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
-	UStaticMeshComponent* MeshComponent;
+	UStaticMeshComponent* GachaBallMeshComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
+	UStaticMeshComponent* HatMeshComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
+	UStaticMeshComponent* CharacterMeshComponent;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
 	class UBash_Component* BashComponent;
@@ -36,7 +42,7 @@ public:
 	
 	// Sets default values for this pawn's properties
 	APlayerPawn();
-
+	
 	void MoveForward(float value);
 	void MoveRight(float value);
 	
@@ -50,9 +56,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void FinishDying();
 
+	UFUNCTION(BlueprintCallable)
 	void LimitMaximumSpeed() const;
+	
+	UFUNCTION(BlueprintCallable)
+	void OrientCharacter();
 
-	// RR - This should really be from a controller...
+	UFUNCTION(BlueprintCallable)
+	void RebuildCustomisation();
+	
+	// This should really be from a controller...
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaTime) override;
 

@@ -7,6 +7,8 @@
 #include "Components/Shield_Powerup_Component.h"
 #include "Powerup.h"
 
+#include "Kismet/KismetMathLibrary.h"
+
 // Sets default values
 APlayerPawn::APlayerPawn()
 {
@@ -28,14 +30,15 @@ void APlayerPawn::MoveForward(float value)
 	{
 		return;
 	}
-	else if (nullptr == MeshComponent)
+	else if (nullptr == GachaBallMeshComponent)
 	{
 		return;
 	}
 	
-	MeshComponent->AddAngularImpulseInDegrees(FVector::RightVector * value * RollSpeed, NAME_None, true);
+	GachaBallMeshComponent->AddAngularImpulseInDegrees(FVector::RightVector * value * RollSpeed, NAME_None, true);
 
 	LimitMaximumSpeed();
+	OrientCharacter();
 }
 
 void APlayerPawn::MoveRight(float value)
@@ -46,14 +49,15 @@ void APlayerPawn::MoveRight(float value)
 	{
 		return;
 	}
-	else if (nullptr == MeshComponent)
+	else if (nullptr == GachaBallMeshComponent)
 	{
 		return;
 	}
 	
-	MeshComponent->AddAngularImpulseInDegrees(FVector::ForwardVector * -value * RollSpeed, NAME_None, true);
+	GachaBallMeshComponent->AddAngularImpulseInDegrees(FVector::ForwardVector * -value * RollSpeed, NAME_None, true);
 
 	LimitMaximumSpeed();
+	OrientCharacter();
 }
 
 void APlayerPawn::Bash()
@@ -84,33 +88,56 @@ void APlayerPawn::FinishDying()
 
 void APlayerPawn::LimitMaximumSpeed() const
 {
-	FVector const currentVelocity = MeshComponent->ComponentVelocity;
+	FVector const currentVelocity = GachaBallMeshComponent->ComponentVelocity;
 	FVector maxVelocity = (FVector::OneVector * MaximumRollSpeed);
 	
 	// Check our max speed
 	if(currentVelocity.SizeSquared() > maxVelocity.SizeSquared())
 	{
 		maxVelocity.Z = currentVelocity.Z; // Keep our current Z ?
-		MeshComponent->SetPhysicsLinearVelocity(maxVelocity, false, NAME_None);
+		GachaBallMeshComponent->SetPhysicsLinearVelocity(maxVelocity, false, NAME_None);
 	}
+}
+
+void APlayerPawn::OrientCharacter()
+{
+	if(nullptr == CharacterMeshComponent)
+	{
+		return;
+	}
+
+	float yaw { 0 }, pitch { 0 };
+	UKismetMathLibrary::GetYawPitchFromVector(FVector(InputDir.X, InputDir.Y, 0.0f), yaw, pitch);
+	CharacterMeshComponent->SetWorldRotation(FRotator(0.0f, yaw - 90.0f, 0.0f));
+}
+
+void APlayerPawn::RebuildCustomisation()
+{
+	
 }
 
 void APlayerPawn::AddComponents()
 {
 	BashComponent = CreateDefaultSubobject<UBash_Component>(TEXT("Character Bash"));
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
 	ShieldComponent = CreateDefaultSubobject<UShield_Powerup_Component>(TEXT("Powerup Shield"));
 	PowerupCollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
 
+	GachaBallMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
+	HatMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hat Mesh"));
 }
 
 void APlayerPawn::SetupComponents()
 {
-	if(MeshComponent != nullptr)
+	if(nullptr != GachaBallMeshComponent)
 	{
-		SetRootComponent(MeshComponent);
-		MeshComponent->SetSimulatePhysics(true);
-		MeshComponent->SetHiddenInGame(false);
+		SetRootComponent(GachaBallMeshComponent);
+		GachaBallMeshComponent->SetSimulatePhysics(true);
+		GachaBallMeshComponent->SetHiddenInGame(false);
+	}
+
+	if(nullptr != HatMeshComponent)
+	{
+		HatMeshComponent->SetupAttachment(RootComponent);
 	}
 
 	//CP - Setup Power Up Collection Sphere.
