@@ -4,6 +4,7 @@
 #include "PlayerPawn.h"
 #include "Components/SphereComponent.h"
 #include "Components/Bash_Component.h"
+#include "Components/Shield_Powerup_Component.h"
 #include "Powerup.h"
 
 // Sets default values
@@ -67,7 +68,8 @@ void APlayerPawn::Bash()
 
 void APlayerPawn::ActivatePowerup()
 {
-	
+	if (ShieldComponent)
+		ShieldComponent->SetPowerup(true);
 }
 
 void APlayerPawn::Die()
@@ -97,7 +99,9 @@ void APlayerPawn::AddComponents()
 {
 	BashComponent = CreateDefaultSubobject<UBash_Component>(TEXT("Character Bash"));
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
+	ShieldComponent = CreateDefaultSubobject<UShield_Powerup_Component>(TEXT("Powerup Shield"));
 	PowerupCollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
+
 }
 
 void APlayerPawn::SetupComponents()

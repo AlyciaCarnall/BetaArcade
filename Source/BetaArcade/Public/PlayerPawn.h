@@ -19,6 +19,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
 	class UBash_Component* BashComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Powerups")
+	class UShield_Powerup_Component* ShieldComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BasePlayerPawn")
 	class USphereComponent* PowerupCollectionSphere;
 

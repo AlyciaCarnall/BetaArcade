@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// DO NOT USE!!!!!!!!!!!!!!
 
 #pragma once
 
@@ -31,10 +31,6 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Base Powerup Settings")
 	bool IsPowerupActive();
 
-protected:
-
 	virtual void SetPowerup(bool enable);
 
-	//Cached ref to parent player.
-	class APlayerPawn* ParentPlayer;
 };

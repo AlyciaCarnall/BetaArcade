@@ -11,7 +11,6 @@ UBasePowerup_Component::UBasePowerup_Component()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	ParentPlayer = Cast<APlayerPawn>(GetOwner());
 }
 
 
@@ -22,9 +21,14 @@ bool UBasePowerup_Component::IsPowerupActive()
 
 void UBasePowerup_Component::SetPowerup(bool enable)
 {
-	CooldownCurrentTimeSeconds = CooldownMaxTimeSeconds;
+	if (enable)
+	{
+		CooldownCurrentTimeSeconds = CooldownMaxTimeSeconds;
+	}
 
-	//Remaining behavior integrated in derived classes.
+	else
+		CooldownCurrentTimeSeconds = 0.0f;
+
 }
 
 // Called every frame
@@ -36,7 +40,8 @@ void UBasePowerup_Component::TickComponent(float DeltaTime, ELevelTick TickType,
 	if (IsPowerupActive())
 	{
 		CooldownCurrentTimeSeconds -= DeltaTime;
-		if (IsPowerupActive())
+
+		if (!IsPowerupActive())
 		{
 			CooldownCurrentTimeSeconds = 0.0f;
 			SetPowerup(false);

@@ -1,12 +1,15 @@
 // Author : Ryan Robson T7091365
 //Edit's by : Alycia Carnall, Craig Palmer
 
+// DO NOT USE!!!!!!!!!!!!!!
+
 #include "BasePlayerCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Powerup.h"
+#include "Components/Shield_Powerup_Component.h"
 
 
 
@@ -48,6 +51,8 @@ void ABasePlayerCharacter::AddCharacterComponents()
 	CollectionSphere->SetupAttachment(RootComponent);
 	CollectionSphere->SetSphereRadius(200.0f);
 }
+
+
 
 void ABasePlayerCharacter::SetupCharacterComponents()
 {
