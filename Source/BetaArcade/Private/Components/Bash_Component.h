@@ -20,6 +20,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Bash")
 	float Speed = 3000.0f;
 
+	// The Height to add when bashing
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Bash")
+	float ZJumpHeight = 0.1f;
+	
 	// Duration ?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Bash")
 	float Duration = 1.0f;
@@ -35,5 +39,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(BlueprintCallable)
 	virtual void TriggerBash();
 };

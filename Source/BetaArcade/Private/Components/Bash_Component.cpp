@@ -36,7 +36,7 @@ void UBash_Component::TriggerBash()
 
 	APlayerPawn const * const Player = Cast<APlayerPawn>(GetOwner());
 
-	FVector const dashDir = FVector(Player->InputDir.X, Player->InputDir.Y, 0.1f);
-	Player->MeshComponent->AddImpulse(dashDir * Speed, NAME_None, true);
+	FVector const dashDir = FVector(Player->InputDir.X, Player->InputDir.Y, ZJumpHeight);
+	Player->GachaBallMeshComponent->AddImpulse(dashDir * Speed, NAME_None, true);
 }
 
