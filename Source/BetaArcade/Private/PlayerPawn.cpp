@@ -74,6 +74,7 @@ void APlayerPawn::ActivatePowerup()
 {
 	if (ShieldComponent)
 		ShieldComponent->SetPowerup(true);
+	
 }
 
 void APlayerPawn::Die()
