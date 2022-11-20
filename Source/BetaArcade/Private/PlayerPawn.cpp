@@ -117,6 +117,7 @@ void APlayerPawn::AddComponents()
 {
 	BashComponent = CreateDefaultSubobject<UBash_Component>(TEXT("Character Bash"));
 	ShieldComponent = CreateDefaultSubobject<UShield_Powerup_Component>(TEXT("Powerup Shield"));
+	TwoTimesScoreComponent = CreateDefaultSubobject<UBasePowerup_Component>(TEXT("Two Times Score"));
 	PowerupCollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
 
 	GachaBallMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
@@ -167,6 +168,10 @@ void APlayerPawn::CollectPickups()
 			if (TestPickup->TypeEnum == EPowerupType::PWR_SHIELD)
 			{
 				ActivatePowerup();
+			}
+			else if (TestPickup->TypeEnum == EPowerupType::PWR_2XSCORE)
+			{
+				if (TwoTimesScoreComponent) TwoTimesScoreComponent->SetPowerup(true);
 			}
 		}
 	}
