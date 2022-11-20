@@ -62,12 +62,9 @@ void APlayerPawn::MoveRight(float value)
 
 void APlayerPawn::Bash()
 {
-	if(nullptr == BashComponent)
-	{
-		return;
-	}
-	
-	BashComponent->TriggerBash();
+	//CP - Call OnBashEvent is successfully Bashed.
+	if (BashComponent && BashComponent->TriggerBash())
+		OnBash();
 }
 
 void APlayerPawn::ActivatePowerup()

@@ -23,12 +23,12 @@ void UBash_Component::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	CooldownCurrentTimeSeconds -= DeltaTime;
 }
 
-void UBash_Component::TriggerBash()
+bool UBash_Component::TriggerBash()
 {
 	// Can't bash
 	if(CooldownCurrentTimeSeconds > 0.0f)
 	{
-		return;
+		return false;
 	}
 
 	// Reset our cooldown
@@ -38,5 +38,7 @@ void UBash_Component::TriggerBash()
 
 	FVector const dashDir = FVector(Player->InputDir.X, Player->InputDir.Y, ZJumpHeight);
 	Player->GachaBallMeshComponent->AddImpulse(dashDir * Speed, NAME_None, true);
+
+	return true;
 }
 
