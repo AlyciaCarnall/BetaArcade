@@ -2,10 +2,13 @@
 // Edit's by : Alycia Carnall, Craig Palmer
 
 #include "PlayerPawn.h"
+
+#include "BaseGameInstance.h"
 #include "Components/SphereComponent.h"
 #include "Components/Bash_Component.h"
 #include "Components/Shield_Powerup_Component.h"
 #include "Powerup.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "Kismet/KismetMathLibrary.h"
 
@@ -15,11 +18,13 @@ APlayerPawn::APlayerPawn()
 	// Setup our components first
 	AddComponents();
 	SetupComponents();
-
+	
 	PrimaryActorTick.bCanEverTick = true;
 
 	// This should really be from a controller...
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
+	GachaBallMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerPawn::OnOverlapBegin);
 }
 
 void APlayerPawn::MoveForward(float value)
@@ -98,19 +103,43 @@ void APlayerPawn::LimitMaximumSpeed() const
 
 void APlayerPawn::OrientCharacter()
 {
-	if(nullptr == CharacterMeshComponent)
+	if(nullptr == CharacterChildComponent)
 	{
 		return;
 	}
 
 	float yaw { 0 }, pitch { 0 };
 	UKismetMathLibrary::GetYawPitchFromVector(FVector(InputDir.X, InputDir.Y, 0.0f), yaw, pitch);
-	CharacterMeshComponent->SetWorldRotation(FRotator(0.0f, yaw - 90.0f, 0.0f));
+	CharacterChildComponent->SetWorldRotation(FRotator(0.0f, yaw - 90.0f, 0.0f));
 }
 
 void APlayerPawn::RebuildCustomisation()
 {
+	UBaseGameInstance const * const GI = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	
+	if(nullptr != GachaBallChildComponent)
+	{
+		if(nullptr != GI)
+		{
+			GachaBallChildComponent->SetChildActorClass(GI->GetPlayerGachaBallActor(PlayerID));
+		}
+	}
+	
+	if(nullptr != HatChildComponent)
+	{
+		if(nullptr != GI)
+		{
+			HatChildComponent->SetChildActorClass(GI->GetPlayerHatActor(PlayerID));
+		}
+	}
+	
+	if(nullptr != CharacterChildComponent)
+	{
+		if(nullptr != GI)
+		{
+			CharacterChildComponent->SetChildActorClass(GI->GetPlayerCharacterActor(PlayerID));
+		}
+	}
 }
 
 void APlayerPawn::AddComponents()
@@ -121,7 +150,37 @@ void APlayerPawn::AddComponents()
 	PowerupCollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
 
 	GachaBallMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
-	HatMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hat Mesh"));
+
+	// Customisation
+	{
+		GachaBallChildComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("Gacha Ball Child"));
+		HatChildComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("Hat Child"));
+		CharacterChildComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("Character Child"));
+
+		if(nullptr == CustomisationPivot)
+		{
+			CustomisationPivot = CreateDefaultSubobject<USceneComponent>(TEXT("Customisation Pivot"));
+			CustomisationPivot->bEditableWhenInherited = true;
+		}
+
+		if(nullptr == GachaBallPivot)
+		{
+			GachaBallPivot = CreateDefaultSubobject<USceneComponent>(TEXT("Gacha Ball Pivot"));
+			GachaBallPivot->bEditableWhenInherited = true;
+		}
+		
+		if(nullptr == CharacterPivot)
+		{
+			CharacterPivot = CreateDefaultSubobject<USceneComponent>(TEXT("Character Pivot"));
+			CharacterPivot->bEditableWhenInherited = true;
+		}
+
+		if(nullptr == HatPivot)
+		{
+			HatPivot = CreateDefaultSubobject<USceneComponent>(TEXT("Hat Pivot"));
+			HatPivot->bEditableWhenInherited = true;
+		}
+	}
 }
 
 void APlayerPawn::SetupComponents()
@@ -130,14 +189,46 @@ void APlayerPawn::SetupComponents()
 	{
 		SetRootComponent(GachaBallMeshComponent);
 		GachaBallMeshComponent->SetSimulatePhysics(true);
-		GachaBallMeshComponent->SetHiddenInGame(false);
+		GachaBallMeshComponent->SetHiddenInGame(true);
 	}
 
-	if(nullptr != HatMeshComponent)
+	// Customisation
 	{
-		HatMeshComponent->SetupAttachment(RootComponent);
-	}
+		if(nullptr != GachaBallPivot)
+		{
+			GachaBallPivot->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+				
+			if(nullptr != GachaBallChildComponent)
+			{
+				GachaBallChildComponent->AttachToComponent(GachaBallPivot, FAttachmentTransformRules::KeepWorldTransform);
+			}
+		}
+		
+		if(nullptr != CustomisationPivot)
+		{
+			CustomisationPivot->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+		
+			if(nullptr != HatPivot)
+			{
+				HatPivot->AttachToComponent(CustomisationPivot, FAttachmentTransformRules::KeepWorldTransform);
+				
+				if(nullptr != HatChildComponent)
+				{
+					HatChildComponent->AttachToComponent(HatPivot, FAttachmentTransformRules::KeepWorldTransform);
+				}
+			}
 
+			if(nullptr != CharacterPivot)
+			{
+				CharacterPivot->AttachToComponent(CustomisationPivot, FAttachmentTransformRules::KeepWorldTransform);
+				
+				if(nullptr != CharacterChildComponent)
+				{
+					CharacterChildComponent->AttachToComponent(CharacterPivot, FAttachmentTransformRules::KeepWorldTransform);
+				}
+			}
+		}
+	}
 	//CP - Setup Power Up Collection Sphere.
 	if (PowerupCollectionSphere != nullptr)
 	{
@@ -195,5 +286,24 @@ void APlayerPawn::Tick(float DeltaTime)
 
 	//CP - Collect pickups in range of collection sphere.
 	CollectPickups();
+}
+
+void APlayerPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
+{
+	if (nullptr == OtherActor || OtherActor == this)
+	{
+		return;
+	}
+
+	APlayerPawn* otherPlayer = Cast<APlayerPawn>(OtherActor);
+
+	if(nullptr == otherPlayer)
+	{
+		return;
+	}
+
+	LastCollidedPlayerID = otherPlayer->PlayerID;
+	
+	OnPlayerCollide();
 }
 
