@@ -28,6 +28,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Powerups")
 	class UShield_Powerup_Component* ShieldComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Powerups")
+	class UBasePowerup_Component* TwoTimesScoreComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BasePlayerPawn")
 	class USphereComponent* PowerupCollectionSphere;
 
@@ -68,6 +71,9 @@ public:
 	// This should really be from a controller...
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnBash();
 
 protected:
 	void AddComponents();
