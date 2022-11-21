@@ -140,6 +140,8 @@ void APlayerPawn::RebuildCustomisation()
 			CharacterChildComponent->SetChildActorClass(GI->GetPlayerCharacterActor(PlayerID));
 		}
 	}
+
+	if (ShieldComponent)ShieldComponent->SetPowerup(true);
 }
 
 void APlayerPawn::AddComponents()
