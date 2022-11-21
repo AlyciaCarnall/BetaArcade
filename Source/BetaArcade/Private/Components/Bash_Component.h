@@ -41,4 +41,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual bool TriggerBash();
+
+	//Return whether timer active.
+	UFUNCTION(BlueprintPure, Category = "Bash")
+	bool IsBashActive();
+
 };
