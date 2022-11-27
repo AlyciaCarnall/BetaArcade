@@ -4,6 +4,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlayerID.h"
 #include "GameFramework/Pawn.h"
 #include "PlayerPawn.generated.h"
 
@@ -13,14 +14,17 @@ class BETAARCADE_API APlayerPawn : public APawn
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
-	UStaticMeshComponent* GachaBallMeshComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
-	UStaticMeshComponent* HatMeshComponent;
-	
+	TEnumAsByte<EPlayerID> PlayerID;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
-	UStaticMeshComponent* CharacterMeshComponent;
+	TEnumAsByte<EPlayerID> LastCollidedPlayerID;
+	
+	// This is the root which our forces act on
+	// This is hidden in-game so the customisation ball looks real
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
+	UStaticMeshComponent* GachaBallMeshComponent;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
 	class UBash_Component* BashComponent;
@@ -42,6 +46,34 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn")
 	FVector2D InputDir = FVector2D::ZeroVector;
+
+	
+	// Customisation
+	//
+	// Locked Rotation
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn|Customisation")
+	USceneComponent* CustomisationPivot;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn|Customisation")
+	USceneComponent* GachaBallPivot;
+
+	// Locked Rotation
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn|Customisation")
+	USceneComponent* HatPivot;
+
+	// Locked Rotation
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn|Customisation")
+	USceneComponent* CharacterPivot;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn|Customisation")
+	UChildActorComponent* GachaBallChildComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn|Customisation")
+	UChildActorComponent* HatChildComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BasePlayerPawn|Customisation")
+	UChildActorComponent* CharacterChildComponent;
+	//
 	
 	// Sets default values for this pawn's properties
 	APlayerPawn();
@@ -72,9 +104,15 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, Category = "Bash")
 	void OnBash();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Bash")
+	void FinishOnBash();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnPlayerCollide();
+	
 protected:
 	void AddComponents();
 	void SetupComponents();
@@ -82,4 +120,9 @@ protected:
 	//CP - Collect in pickups in range of collection sphere
 	UFUNCTION(BlueprintCallable, Category = "Pickups")
 	void CollectPickups();
+
+private:
+	/** called when something enters the sphere component */
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit);
 };

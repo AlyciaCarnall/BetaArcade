@@ -21,6 +21,13 @@ void UBash_Component::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	}
 
 	CooldownCurrentTimeSeconds -= DeltaTime;
+
+	//CP - Have we finished Bashing?
+	if (CooldownCurrentTimeSeconds <= 0.0f)
+	{
+		auto player = Cast<APlayerPawn>(GetOwner());
+		player->FinishOnBash();
+	}
 }
 
 bool UBash_Component::TriggerBash()
@@ -38,7 +45,11 @@ bool UBash_Component::TriggerBash()
 
 	FVector const dashDir = FVector(Player->InputDir.X, Player->InputDir.Y, ZJumpHeight);
 	Player->GachaBallMeshComponent->AddImpulse(dashDir * Speed, NAME_None, true);
-
 	return true;
+}
+
+bool UBash_Component::IsBashActive()
+{
+	return (CooldownCurrentTimeSeconds > 0.0f);
 }
 

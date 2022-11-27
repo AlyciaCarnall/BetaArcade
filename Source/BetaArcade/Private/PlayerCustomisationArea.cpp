@@ -11,10 +11,6 @@ APlayerCustomisationArea::APlayerCustomisationArea()
 	// Setup our components first
 	AddComponents();
 	SetupComponents();
-	
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -38,11 +34,3 @@ void APlayerCustomisationArea::SetupComponents()
 		CaptureCameraComponent->SetupAttachment(RootComponent);
 	}
 }
-
-// Called every frame
-void APlayerCustomisationArea::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-

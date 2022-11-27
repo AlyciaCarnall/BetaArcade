@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlayerID.h"
 #include "GameFramework/Actor.h"
 #include "PreviewPlayer.generated.h"
 
@@ -16,7 +17,7 @@ public:
 	APreviewPlayer();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PreviewCharacter")
-	int PlayerID { 0 };
+	TEnumAsByte<EPlayerID> PlayerID;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PreviewCharacter")
 	UChildActorComponent* GachaBallChildComponent;
@@ -31,4 +32,7 @@ public:
 protected:
 	void AddComponents();
 	void SetupComponents();
+
+public:
+	virtual void BeginPlay() override;
 };

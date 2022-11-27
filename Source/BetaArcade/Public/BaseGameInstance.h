@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "PlayerCustomisationInfo.h"
+#include "PlayerID.h"
 #include "BaseGameInstance.generated.h"
 
 UENUM(BlueprintType)
@@ -30,5 +32,20 @@ public:
 	//Time for each Match. 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameMode Settings")
 		float MatchTime;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GameMode Customisation")
+	TArray<TSubclassOf<AActor>> CustomisationGachaBalls;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GameMode Customisation")
+	TArray<TSubclassOf<AActor>> CustomisationHats;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GameMode Customisation")
+	TArray<TSubclassOf<AActor>> CustomisationCharacters;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GameMode Customisation")
+	TArray<FPlayerCustomisationInfo> CustomisationPlayerInfo;
+
+	TSubclassOf<AActor> const GetPlayerGachaBallActor(EPlayerID const PlayerID) const;
+	TSubclassOf<AActor> const GetPlayerHatActor(EPlayerID const PlayerID) const;
+	TSubclassOf<AActor> const GetPlayerCharacterActor(EPlayerID const PlayerID) const;
 };

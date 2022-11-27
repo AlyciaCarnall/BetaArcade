@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Components/SphereComponent.h"
 #include "Components/Shield_Powerup_Component.h"
+#include "Components/SphereComponent.h"
 #include "PlayerPawn.h"
 
 UShield_Powerup_Component::UShield_Powerup_Component() : UBasePowerup_Component()

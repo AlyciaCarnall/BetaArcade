@@ -3,6 +3,9 @@
 
 #include "PreviewPlayer.h"
 
+#include "BaseGameInstance.h"
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values
 APreviewPlayer::APreviewPlayer()
 {
@@ -21,7 +24,7 @@ void APreviewPlayer::AddComponents()
 void APreviewPlayer::SetupComponents()
 {
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
-
+	
 	if(nullptr != GachaBallChildComponent)
 	{
 		GachaBallChildComponent->SetupAttachment(RootComponent);
@@ -38,5 +41,35 @@ void APreviewPlayer::SetupComponents()
 	{
 		CharacterChildComponent->SetupAttachment(RootComponent);
 		CharacterChildComponent->SetComponentTickEnabled(false);
+	}
+}
+
+void APreviewPlayer::BeginPlay()
+{
+	Super::BeginPlay();
+	UBaseGameInstance const * const GI = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	
+	if(nullptr != GachaBallChildComponent)
+	{
+		if(nullptr != GI)
+		{
+			GachaBallChildComponent->SetChildActorClass(GI->GetPlayerGachaBallActor(PlayerID));
+		}
+	}
+	
+	if(nullptr != HatChildComponent)
+	{
+		if(nullptr != GI)
+		{
+			HatChildComponent->SetChildActorClass(GI->GetPlayerHatActor(PlayerID));
+		}
+	}
+	
+	if(nullptr != CharacterChildComponent)
+	{
+		if(nullptr != GI)
+		{
+			CharacterChildComponent->SetChildActorClass(GI->GetPlayerCharacterActor(PlayerID));
+		}
 	}
 }

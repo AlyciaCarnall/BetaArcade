@@ -28,9 +28,4 @@ protected:
 
 	void AddComponents();
 	void SetupComponents();
-	
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 };

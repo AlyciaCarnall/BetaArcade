@@ -9,6 +9,7 @@ public class BetaArcadeEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.AddRange( new string[] { "BetaArcade" } );
+        bUsesSteam = true;
+        ExtraModuleNames.AddRange( new string[] { "BetaArcade" } );
 	}
 }
