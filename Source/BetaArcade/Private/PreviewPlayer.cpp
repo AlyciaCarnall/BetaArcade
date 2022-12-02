@@ -14,6 +14,35 @@ APreviewPlayer::APreviewPlayer()
 	SetupComponents();
 }
 
+void APreviewPlayer::RebuildCustomisation()
+{
+	UBaseGameInstance const * const GI = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	
+	if(nullptr != GachaBallChildComponent)
+	{
+		if(nullptr != GI)
+		{
+			GachaBallChildComponent->SetChildActorClass(GI->GetPlayerGachaBallActor(PlayerID));
+		}
+	}
+	
+	if(nullptr != HatChildComponent)
+	{
+		if(nullptr != GI)
+		{
+			HatChildComponent->SetChildActorClass(GI->GetPlayerHatActor(PlayerID));
+		}
+	}
+	
+	if(nullptr != CharacterChildComponent)
+	{
+		if(nullptr != GI)
+		{
+			CharacterChildComponent->SetChildActorClass(GI->GetPlayerCharacterActor(PlayerID));
+		}
+	}
+}
+
 void APreviewPlayer::AddComponents()
 {
 	GachaBallChildComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("Gacha Ball Mesh"));
@@ -47,29 +76,5 @@ void APreviewPlayer::SetupComponents()
 void APreviewPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	UBaseGameInstance const * const GI = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	
-	if(nullptr != GachaBallChildComponent)
-	{
-		if(nullptr != GI)
-		{
-			GachaBallChildComponent->SetChildActorClass(GI->GetPlayerGachaBallActor(PlayerID));
-		}
-	}
-	
-	if(nullptr != HatChildComponent)
-	{
-		if(nullptr != GI)
-		{
-			HatChildComponent->SetChildActorClass(GI->GetPlayerHatActor(PlayerID));
-		}
-	}
-	
-	if(nullptr != CharacterChildComponent)
-	{
-		if(nullptr != GI)
-		{
-			CharacterChildComponent->SetChildActorClass(GI->GetPlayerCharacterActor(PlayerID));
-		}
-	}
+	RebuildCustomisation();
 }

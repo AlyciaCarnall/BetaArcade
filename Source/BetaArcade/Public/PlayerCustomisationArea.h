@@ -16,11 +16,17 @@ public:
 	// Sets default values for this actor's properties
 	APlayerCustomisationArea();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PreviewCharacter")
+	TEnumAsByte<EPlayerID> PlayerID;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CustomisationArea")
 	USceneCaptureComponent2D* CaptureCameraComponent;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CustomisationArea")
 	APreviewPlayer* PreviewPlayerComponent;
+
+	UFUNCTION(BlueprintCallable)
+	void UpdatePreviewPlayerID();
 	
 protected:
 	// Called when the game starts or when spawned

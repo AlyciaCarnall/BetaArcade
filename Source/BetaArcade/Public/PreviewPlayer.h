@@ -28,6 +28,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PreviewCharacter")
 	UChildActorComponent* CharacterChildComponent;
 
+	UFUNCTION(BlueprintCallable)
+	void RebuildCustomisation();
 	
 protected:
 	void AddComponents();

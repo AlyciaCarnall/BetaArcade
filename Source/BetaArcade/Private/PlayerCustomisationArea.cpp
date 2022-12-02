@@ -11,13 +11,26 @@ APlayerCustomisationArea::APlayerCustomisationArea()
 	// Setup our components first
 	AddComponents();
 	SetupComponents();
+	UpdatePreviewPlayerID();
+}
+
+void APlayerCustomisationArea::UpdatePreviewPlayerID()
+{
+	if(nullptr == PreviewPlayerComponent)
+	{
+		return;
+	}
+
+	PreviewPlayerComponent->PlayerID = PlayerID;
+
+	PreviewPlayerComponent->RebuildCustomisation();
 }
 
 // Called when the game starts or when spawned
 void APlayerCustomisationArea::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	UpdatePreviewPlayerID();
 }
 
 void APlayerCustomisationArea::AddComponents()
