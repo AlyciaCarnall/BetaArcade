@@ -12,7 +12,8 @@ enum class EPowerupType : uint8
 	PWR_NONE	UMETA(DisplayName = "None"),
 	PWR_SHIELD	UMETA(DisplayName = "Shield"),
 	PWR_2XSCORE	UMETA(DisplayName = "Double Points"),
-	PWR_NUM
+	PWR_ADDSCORE UMETA(DisplayName = "Add Points"),
+	PWR_NUM UMETA(DisplayName = "Enum Total")
 };
 
 UCLASS()

@@ -5,8 +5,11 @@
 
 #include "CoreMinimal.h"
 #include "PlayerID.h"
+#include "Powerup.h"
 #include "GameFramework/Pawn.h"
 #include "PlayerPawn.generated.h"
+
+class UBasePowerup_Component;
 
 UCLASS(ClassGroup = (Custom), BlueprintType, Blueprintable, meta = (BlueprintSpawnableComponent))
 class BETAARCADE_API APlayerPawn : public APawn
@@ -33,7 +36,10 @@ public:
 	class UShield_Powerup_Component* ShieldComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Powerups")
-	class UBasePowerup_Component* TwoTimesScoreComponent;
+	UBasePowerup_Component* TwoTimesScoreComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Powerups")
+	UBasePowerup_Component* AddScoreComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BasePlayerPawn")
 	class USphereComponent* PowerupCollectionSphere;
@@ -85,7 +91,7 @@ public:
 	void Bash();
 
 	UFUNCTION(BlueprintCallable, Category = "Pickups")
-	void ActivatePowerup();
+	void ActivateShieldPowerup();
 
 	virtual void Die();
 	UFUNCTION(BlueprintCallable)

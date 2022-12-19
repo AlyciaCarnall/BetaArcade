@@ -72,7 +72,7 @@ void APlayerPawn::Bash()
 		OnBash();
 }
 
-void APlayerPawn::ActivatePowerup()
+void APlayerPawn::ActivateShieldPowerup()
 {
 	if (ShieldComponent)
 		ShieldComponent->SetPowerup(true);
@@ -146,12 +146,19 @@ void APlayerPawn::RebuildCustomisation()
 
 void APlayerPawn::AddComponents()
 {
-	BashComponent = CreateDefaultSubobject<UBash_Component>(TEXT("Character Bash"));
-	ShieldComponent = CreateDefaultSubobject<UShield_Powerup_Component>(TEXT("Powerup Shield"));
-	TwoTimesScoreComponent = CreateDefaultSubobject<UBasePowerup_Component>(TEXT("Two Times Score"));
-	PowerupCollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
+	//D11.CP - Power up Components
+	{
+		TwoTimesScoreComponent = CreateDefaultSubobject<UBasePowerup_Component>(TEXT("Two Times Score"));
+		AddScoreComponent = CreateDefaultSubobject<UBasePowerup_Component>(TEXT("Add Points Score"));
+		PowerupCollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Powerup Collection Sphere"));
+		ShieldComponent = CreateDefaultSubobject<UShield_Powerup_Component>(TEXT("Shield"));
+	}
 
-	GachaBallMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
+	// Base Components
+	{
+		GachaBallMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gacha Ball Mesh"));
+		BashComponent = CreateDefaultSubobject<UBash_Component>(TEXT("Character Bash"));
+	}
 
 	// Customisation
 	{
@@ -257,14 +264,12 @@ void APlayerPawn::CollectPickups()
 			TestPickup->WasCollected();
 			TestPickup->SetActive(false);
 
-			//CP - Test as only type of pickup - later to introduce tags.
-			if (TestPickup->TypeEnum == EPowerupType::PWR_SHIELD)
+			//D11.CP - Activate corresponding component to reflect gameplay effect
+			switch (TestPickup->TypeEnum)
 			{
-				ActivatePowerup();
-			}
-			else if (TestPickup->TypeEnum == EPowerupType::PWR_2XSCORE)
-			{
-				if (TwoTimesScoreComponent) TwoTimesScoreComponent->SetPowerup(true);
+			case EPowerupType::PWR_SHIELD: ActivateShieldPowerup(); break;
+			case EPowerupType::PWR_2XSCORE:  if (TwoTimesScoreComponent) TwoTimesScoreComponent->SetPowerup(true); break;
+			case EPowerupType::PWR_ADDSCORE: if (AddScoreComponent) AddScoreComponent->SetPowerup(true); break;
 			}
 		}
 	}

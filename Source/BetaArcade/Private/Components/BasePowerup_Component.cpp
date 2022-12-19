@@ -31,6 +31,11 @@ void UBasePowerup_Component::SetPowerup(bool enable)
 
 }
 
+void UBasePowerup_Component::DisablePowerUp()
+{
+	CooldownCurrentTimeSeconds = 0.0f;
+}
+
 // Called every frame
 void UBasePowerup_Component::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

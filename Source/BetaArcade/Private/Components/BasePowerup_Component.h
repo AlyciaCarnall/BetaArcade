@@ -33,4 +33,7 @@ public:
 
 	virtual void SetPowerup(bool enable);
 
+	UFUNCTION(BlueprintCallable)
+	void DisablePowerUp();
+
 };
